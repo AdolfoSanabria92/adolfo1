@@ -1,0 +1,52 @@
+#include <Arduino.h>
+
+float a = 0;
+float b = 0;
+float resultado = 0.0;
+
+byte orden = 0;
+String Input = "";
+char charx = 0x00;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println();
+  Serial.println("Ejercicio 1:");
+  Serial.println("digite valor de a: ");
+}
+
+void loop() {
+
+  while (Serial.available() > 0) {
+    charx = Serial.read();
+    if (charx != '\n') {
+      if (charx != '\r') {
+        Input += charx;
+      }
+    }    
+    Serial.write(charx);    
+  }
+
+  if (charx == '\n') {
+   
+      if (orden == 0) {
+        a = atof(Input.c_str());
+        Serial.println("digite valor de b:");
+      }
+      if (orden == 1) {
+        b = atof(Input.c_str());
+        resultado = (a/b) + 1.0;
+        Serial.println("Resultado: " + String(resultado, 2));
+      }
+
+
+      orden++;
+      if (orden > 1) {
+        orden = 0;
+        Serial.println("\ndigite valor de a:");
+      }
+      charx = 0x00;
+      Input = "";
+  }
+
+}
